@@ -68,4 +68,7 @@ def summarizer(content, num_lines = 5):
         paras.append(' '.join(list(sorted_df.iloc[i:i + num_lines,1])))
         similarity.append(cosine_similarity(' '.join(list(sorted_df.iloc[i:i + num_lines,1])), Y_set))
     
-    return paras[similarity.index(max(similarity))].split('. ')
+        results = paras[similarity.index(max(similarity))].split('. ')
+        
+        summary = ' '.join(results)
+    return summary
