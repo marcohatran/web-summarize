@@ -15,8 +15,6 @@ def get_data_from_url(url):
     source = requests.get(url).text
     soup = BeautifulSoup(source,'lxml')
     params =soup.find_all("p")
-    print("ok")
-
     content = []
     for param in params:
         content.append(param.text)
