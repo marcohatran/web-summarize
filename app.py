@@ -1,5 +1,6 @@
+# -*- coding: utf-8 -*-
 from flask import Flask, request,render_template,jsonify,url_for,Response,jsonify,make_response, redirect
-from utils.utils import get_data_from_url
+from utils.utils import get_data_from_url, get_domain, get_title_from, gen_summary
 from utils.summarizer import summarizer
 app = Flask(__name__)
 @app.route('/summarizer', methods =['POST'])
@@ -27,12 +28,22 @@ def post_url():
         return make_response(jsonify({'error': str('Bad Request: `url` is empty')}), 400)
 
     try:
-        article = get_data_from_url(url)
-        summary = summarizer(article,2)
+        domain = get_domain(url)
+        title = get_title_from(url)
+        # article = get_data_from_url(url)
+        # summary = summarizer(article,4)
     except Exception as e:
         print("Error: "+str(e))
         pass
-    return make_response(jsonify({'summary': summary}))
+
+    try:
+        article = get_data_from_url(url)
+        summary_new = gen_summary(article)
+    except Exception as e:
+        print("Error: "+str(e))
+        pass
+
+    return make_response(jsonify({'domain': domain,'title': title, 'summary_article':summary_new}))
         
 
 
